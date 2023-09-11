@@ -5,7 +5,7 @@
     DB of choice is mySQL
 """
 # importing important/ required modules
-from flask import Flask, make_response, jsonify, request, Blueprint
+from flask import Flask, make_response, jsonify, request, Blueprint, abort
 from flask_cors import (CORS, cross_origin)
 from users import User
 
