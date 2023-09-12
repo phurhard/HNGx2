@@ -5,27 +5,24 @@ from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-# Create a SQLite database engine
-engine = create_engine('sqlite:///HNGxTWO.db')
 
 # Create a base class for declarative models
 Base = declarative_base()
-# Create the database tables
-Base.metadata.create_all(engine)
 
-# Create a session to interact with the database
-Session = sessionmaker(bind=engine)
-session = Session()
 # Define your User model
 class User(Base):
     __tablename__ = 'users'
     
-    id = Column(String, primary_key=True, autoincrement=False)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, nullable=False)
     
     def __init__(self):
         '''Initialization'''
-        pass
+        engine = create_engine("sqlite:///HNGxTWO.db")
+        Base.metadata.create_all(engine)
+        Session = sessionmaker(bind=engine)
+        self.session = Session()
+
     def strValidation(self, x: str = None) -> str:
         '''Validate input'''
         if x is None or type(x) is not str:
@@ -33,23 +30,33 @@ class User(Base):
         else:
             return x
     
-    def new(self, obj):
+    def new(self):
         '''Adds a new obj to the db'''
-        self.session.add(obj)
+        self.session.add(self)
     def save(self):
         '''Saves the current session'''
+        print('before save')
         self.session.commit()
+        print('saved')
 
     def get(self, user_id):
         '''Returns a user based on its id'''
+        print(type(self.session))
         All = self.session.query(User).all()
         for user in All:
             if user.id == user_id:
                 return user
+        return All
 
     def to_json(self):
         '''serializes the instance'''
-        serial = self.__dict__().copy()
+        serial = {}
+        for k, v in self.__dict__.items():
+            if k.startswith('ses') or k.startswith('_'):
+                pass
+            else:
+                serial[k] = v
+        print(serial)
         return serial
     def delete(self, user=None):
         '''Deletes an instance feom the DB'''

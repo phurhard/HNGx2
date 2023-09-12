@@ -64,6 +64,7 @@ def newUser() -> str:
     
     try:
         data  = request.get_json()
+        print(data)
         # data is gotten from the payload
     except:
         data = None
@@ -75,6 +76,8 @@ def newUser() -> str:
         try:
             user = User()
             user.name = data.get("name")
+            print(type(user.save()))
+            user.new()
             user.save()
             return jsonify(user.to_json()), 201
         except Exception as e:
@@ -84,7 +87,7 @@ def newUser() -> str:
 # Read from the DB n get a users info
 
 @app_views.route("/api/<user_id>", methods=["GET"], strict_slashes=False)
-def getUser(user_id: str = None) -> str:
+def getUser(user_id):
     """ 
     GET the user based on the name
     
@@ -96,8 +99,8 @@ def getUser(user_id: str = None) -> str:
             name: myName
             }
     """
-    if user_id is None or type(user_id) is not str:
-        abort(403)
+#    if user_id is None or type(user_id) is not str:
+#        abort(403)
     user = User.get(user_id)# implement from geoalert or airbnb4
     if user is None:
         abort(404)# initialize this at the top and message should b user not found
