@@ -3,8 +3,8 @@
 import pprint
 import requests
 
-#url = "https://apis-fi9i.onrender.com"
-url = "http://127.0.0.1:5000"
+url = "https://apis-fi9i.onrender.com"
+# url = "http://127.0.0.1:5000" # uncomment for localhost testing
 def test_post():
     '''Test the post endpoint'''
     postUrl = url + "/api"
@@ -21,7 +21,7 @@ def test_post():
 
 def test_get():
     '''Test the GET endpoint'''
-    getUrl = url + '/api/' + input("UserId:= ")
+    getUrl = url + '/api/' + input("Name:= ")
     user = requests.get(getUrl)
     if user.status_code == 200:
         userInfo = user.json()
@@ -30,7 +30,7 @@ def test_get():
         return user.json()
 def test_put():
     '''Test the put method'''
-    updateUrl = url + '/api/' + input('UserId: ')
+    updateUrl = url + '/api/' + input('Name: ')
     New_name = str(input("New name: "))
     data = {'name': New_name}
     update = requests.put(updateUrl, json=data)
@@ -43,11 +43,10 @@ def test_put():
 
 def test_delete():
     '''Test the delete endpoint'''
-    deleteUrl = url + '/api/' + input('UserId: ')
+    deleteUrl = url + '/api/' + input('Name: ')
     delete = requests.delete(deleteUrl)
     if delete.status_code == 204:
         print('User has been deleted')
-        return delete.json()
     else:
         return delete.json()
 
