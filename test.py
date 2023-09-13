@@ -3,13 +3,14 @@
 import pprint
 import requests
 
-url = "https://apis-fi9i.onrender.com"
+#url = "https://apis-fi9i.onrender.com"
+url = "http://127.0.0.1:5000"
 def test_post():
     '''Test the post endpoint'''
-    url = url + "/api"
+    postUrl = url + "/api"
     data = {'name': input("Name:= ")}
     #post
-    newUser = requests.post(url, json=data)
+    newUser = requests.post(postUrl, json=data)
     if newUser.status_code == 201:
         userInfo = newUser.json()
         userId = userInfo['id']
@@ -29,8 +30,9 @@ def test_get():
         return user.json()
 def test_put():
     '''Test the put method'''
-    data = {'name': 'New name'}
     updateUrl = url + '/api/' + input('UserId: ')
+    New_name = str(input("New name: "))
+    data = {'name': New_name}
     update = requests.put(updateUrl, json=data)
     if update.status_code == 200:
         userInfo = update.json()
@@ -45,15 +47,15 @@ def test_delete():
     delete = requests.delete(deleteUrl)
     if delete.status_code == 204:
         print('User has been deleted')
-        return delete
+        return delete.json()
     else:
         return delete.json()
 
 # Checker
 def all_users():
     ''' Get all'''
-    url = url + '/api'
-    check = requests.get(url)
+    Url = url + '/api'
+    check = requests.get(Url)
     if check.status_code == 200:
         return check.json()
     else:
@@ -71,7 +73,7 @@ while True:
         print(test_post())
     if user == 'get':
         print(test_get())
-    if user == 'put':
+    if user == 'update':
         print(test_put())
     if user == 'delete':
         print(test_delete())

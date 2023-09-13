@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 ''' An api capable of all CRUD operations'''
 # Import neccessary modules
+from datetime import datetime
 from flask import Flask, jsonify, request, Blueprint, abort
 from flask_cors import CORS
 
@@ -48,10 +49,10 @@ def bad_request(error):
 def allUsers():
     '''Gets all users in the database'''
     session = Session()
-    all_users = {}
+    all_users = []
     users_all = users.User.all(session)
     for user in users_all:
-        all_users[user.id] = user.to_json()
+        all_users.append(user.to_json())
     return jsonify(all_users)
 
 # CREATE a new User
@@ -69,9 +70,16 @@ def new_user():
 
     try:
         session = Session()
-        user = users.User(data["name"])
-        user.save(session)
-        return jsonify(user.to_json()), 201
+        #check if there is a user with same name
+        duplicate = users.User.get(session, data["name"])
+        print(duplicate)
+        if duplicate is None:
+            user = users.User(name=data["name"])
+            user.save(session)
+            return jsonify(user.to_json()), 201
+        else:
+            print('ddid not get here')
+            return jsonify({"error": "User already exists"}), 400
     except Exception as e:
         return jsonify({'error': 'Can\'t create User: {}'.format(e)}), 400
 
@@ -104,9 +112,13 @@ def update_user(user_id: str) -> str:
         return jsonify({'error': 'Wrong format'}), 400
 
     if 'name' in data:
-        user.name = data['name']
-        user.save(session)
-        return jsonify(user.to_json()), 200
+        duplicate = users.User.get(session, data['name'])
+        if duplicate is None:
+            user.name = data['name']
+            user.save(session)
+            return jsonify(user.to_json()), 200
+        else:
+            return jsonify({"error": "Name already exists"}), 400
 
 # DELETE Removes a user from the database
 @app_views.route("/api/<string:user_id>", methods=["DELETE"], strict_slashes=False)
