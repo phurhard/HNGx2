@@ -1,29 +1,30 @@
 # API performing CRUD operations on persons resource
 
 ## Setting up locally
-    Ensure you have python installed on your system, run
-    ```bash
+Ensure you have python installed on your system, run
+    
+    
     apt upgrade
     apt update
-    ```
-    clone this repo
-    ```bash
+    
+ clone this repo
+    
     git clone https://github.com/phurhard/HNGx2.git
-    ```
-    cd into the repo
-    ```bash
+    
+cd into the repo
+    
     cd HNGx2/
-    ```
-    run
-    ```bash
+    
+run
+    
     pip -r install requirements.txt
-    ```
-    to install required files/libraries
-    Great you're all set up, you can now run the flask server.
-    ```bash
+    
+to install required files/libraries
+Great you're all set up, you can now run the flask server.
+    
     python -m api.app
-    ```
-    This will start the flask server amd create a database on your local machine.
+    
+This will start the flask server amd create a database on your local machine.
 
 ## Standard formats
     The server/endpoints can be commumicated with by either using curl or any other known requests library.
