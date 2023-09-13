@@ -3,10 +3,10 @@
 import pprint
 import requests
 
-url = "http://127.0.0.1:5000/api"
+url = "https://apis-fi9i.onrender.com"
 def test_post():
     '''Test the post endpoint'''
-    url = "http://127.0.0.1:5000/api"
+    url = url + "/api"
     data = {'name': input("Name:= ")}
     #post
     newUser = requests.post(url, json=data)
@@ -20,8 +20,8 @@ def test_post():
 
 def test_get():
     '''Test the GET endpoint'''
-    getUrl = url + '/' + input("UserId:= ")
-    user = requests.get(getUrl, timeout=0.05)
+    getUrl = url + '/api/' + input("UserId:= ")
+    user = requests.get(getUrl)
     if user.status_code == 200:
         userInfo = user.json()
         return userInfo
@@ -30,8 +30,8 @@ def test_get():
 def test_put():
     '''Test the put method'''
     data = {'name': 'New name'}
-    updateUrl = url + '/' + input('UserId: ')
-    update = requests.put(updateUrl, json=file)
+    updateUrl = url + '/api/' + input('UserId: ')
+    update = requests.put(updateUrl, json=data)
     if update.status_code == 200:
         userInfo = update.json()
         print('Updated successfully')
@@ -41,7 +41,7 @@ def test_put():
 
 def test_delete():
     '''Test the delete endpoint'''
-    deleteUrl = url + '/' + input('UserId: ')
+    deleteUrl = url + '/api/' + input('UserId: ')
     delete = requests.delete(deleteUrl)
     if delete.status_code == 204:
         print('User has been deleted')
@@ -52,7 +52,7 @@ def test_delete():
 # Checker
 def all_users():
     ''' Get all'''
-    url = 'http://127.0.0.1:5000/checker'
+    url = url + '/api'
     check = requests.get(url)
     if check.status_code == 200:
         return check.json()

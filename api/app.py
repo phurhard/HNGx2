@@ -44,7 +44,7 @@ def bad_request(error):
 
 # CRUD Operations
 # Checker
-@app_views.route('/checker', methods=['GET'], strict_slashes=True)
+@app_views.route('/api', methods=['GET'], strict_slashes=True)
 def allUsers():
     '''Gets all users in the database'''
     session = Session()
