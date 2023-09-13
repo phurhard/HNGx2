@@ -80,4 +80,4 @@ The standard format[#standard_format] can also be used to view how the api endpo
     ```
     curl -X POST -H "Content-Type: application/json" -d '{"name": "phurhard"}' http://localhost:5000/api
     ```
-
+The (test.py)[test.py] file can also be run to test the endpoints
