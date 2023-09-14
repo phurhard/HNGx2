@@ -2,7 +2,12 @@
 * API capable of performing CRUD operations on a person resource.
 ## Introduction
 This is a simple API with endpoints for CRUD operations on a person resource.
+
+
 run this [test.py](test.py) to test the Endpoints.
+
+
+The UML file is [here](HNGxS2.drawio.png)
      
      
 ### How to run.
