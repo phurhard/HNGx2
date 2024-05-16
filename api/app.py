@@ -49,10 +49,8 @@ def bad_request(error):
 def allUsers():
     '''Gets all users in the database'''
     session = Session()
-    all_users = []
     users_all = users.User.all(session)
-    for user in users_all:
-        all_users.append(user.to_json())
+    all_users = [user.to_json() for user in users_all]
     return jsonify(all_users)
 
 # CREATE a new User
@@ -81,26 +79,26 @@ def new_user():
             print('ddid not get here')
             return jsonify({"error": "User already exists"}), 400
     except Exception as e:
-        return jsonify({'error': 'Can\'t create User: {}'.format(e)}), 400
+        return jsonify({'error': f"Can\'t create User: {e}"}), 400
 
 # READ gets details of a user
 @app_views.route("/api/<string:user_id>", methods=["GET"], strict_slashes=False)
 def get_user(user_id: str) -> str:
     ''' Gets a user object based on user id'''
-    if isinstance(user_id, int) or user_id is None or user_id == "":
+    if isinstance(user_id, int) or user_id is None or not user_id:
         abort(405)
     else:
         session = Session()
-        user = users.User.get(session, user_id)
-        if not user:
+        if user := users.User.get(session, user_id):
+            return jsonify(user.to_json())
+        else:
             return jsonify({'error': 'User not found'}), 404
-        return jsonify(user.to_json())
 
 # UPDATE updates the details of a user
 @app_views.route("/api/<string:user_id>", methods=["PUT"], strict_slashes=False)
 def update_user(user_id: str) -> str:
     ''' Updates a user obj based on the user id'''
-    if user_id is None or isinstance(user_id, int) or user_id == "":
+    if user_id is None or isinstance(user_id, int) or not user_id:
         abort(405)
     session = Session()
     user = users.User.get(session, user_id)
@@ -124,7 +122,7 @@ def update_user(user_id: str) -> str:
 @app_views.route("/api/<string:user_id>", methods=["DELETE"], strict_slashes=False)
 def delete_user(user_id: str) -> str:
     ''' Deletes a user from the database'''
-    if user_id is None or isinstance(user_id, int) or user_id == "":                                                                    abort(405)
+    if user_id is None or isinstance(user_id, int) or not user_id:                                                                    abort(405)
     session = Session()
     user = users.User.get(session, user_id)
     if not user:
